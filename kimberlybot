@@ -1,0 +1,129 @@
+#!/bin/bash 
+
+# KimberlyBot is a friendly conversational tool. 
+
+# She greets users, reads a poem, and serves as access to the Date-a-base. 
+
+# In the future, I hope KimberlyBot will play mood-appropriate music.
+
+# Greet: I say hello to our new friend and introduce myself.
+PURPLE='\033[0;36m'	#Color for greeting and poem now cyan
+BLUE='\033[0;34m'	#Color for Date-a-base and conversations
+GREY='\033[0;37m'	#Color for press anykey
+
+clear
+echo -e "\n${PURPLE}Hello friend!  I am KimberlyBot.  Let's get to know one another!\n"
+echo -e ":P\n"
+
+# Name:  I ask my friend for their name. 
+	# Initialize $NAME variable to "NoName" 
+	# Prompt user for their first name and assign it to $NAME variable.  
+	# Say "Hi" using my new friend's name.  
+# If the friend is Jessie, remind her how much she is loved.  
+
+NAME="NoName"
+DATE=$(date +"%m%d")
+
+echo -e "${BLUE}What is your first name? " && read NAME
+clear
+echo -e "\nHi $NAME, \n"
+
+if [ $NAME = "Jessie" ] ; then
+	echo -e "Kimberly loves you very much! <3\n" 
+	if [ $DATE = "0826" ] ; then
+		echo -e "It's our anniversary! Yay!\n"
+	fi
+fi
+
+# Poem: I ask my friend if they'd like to read a poem.  
+# If they say yes, I display a poem from a poem file.
+	# $POEMQ is the Y/N reply to the question "Would you like to read a poem?"
+		# If $POEMQ is Y, display the contents of the poem's file.
+		# Otherwise, say "Okay, maybe another time."	
+
+read -p "Would you like to read a poem? (Y/N) " POEMQ 
+clear
+if [ $POEMQ = "Y" ] ; then
+	echo -e "${PURPLE}$(cat wildnights)\n" 
+elif [ $POEMQ = "N" ] ; then
+	echo -e "\nOkay, maybe another time.\n" 
+fi
+
+
+# Date-a-base: Date-a-base is where we create a file and fill it with date ideas.  
+# If my friend doesn't want to add a date idea now, they can hear one of my ideas.
+	# IDEAQ1 is the Y/N reply to the question "Do you have a date idea?"
+		# If IDEAQ1 is Y, ask if my friend would like to add it.
+		# If IDEAQ1 is N, ask if my friend would like to hear one of my ideas.
+		# If IDEAQ1 is anything else, throw exception "hmmm... something else... 1"
+	# IDEAQ2 is the Y/N reply to the question "Would you like to tell me 
+		# the idea so that I can add it to the Date-a-base?"
+		# If IDEAQ2 is Y, prompt my friend for the date idea. 
+		# Store the date idea as $IDEA3.
+		# Let them know that the idea was added to the Date-a-base.
+		# If IDEAQ2 is N, say "Okay, maybe later." 
+		# If IDEAQ2 is anything else, throw exception "hmmm... something else... 2"
+
+	# IDEAQ3 is the string reply to the prompt "Enter it here and I will add
+	      	# it to the Date-a-base."
+		# Let my friend know that I added it.  
+	# IDEAQ4 is the Y/N reply to the question "Would you like to hear one of mine?"
+		# If IDEAQ4 is Y, suggest we go to the zoo.
+		# If IDEAQ4 is N, say, "Okay, It was nice chatting with you", say goodbye and exit.
+
+		# If IDEAQ4 is anything else, throw exception "hmmm... something else... 4"
+
+
+# Press ENTER to continue
+echo -e "${GREY}press ENTER to continue" && read ANYKEY
+clear
+echo -e "\n${BLUE}Let's visit the Date-a-base!\n"
+read -p "Do you have a date idea? (Y/N) " IDEAQ1
+clear
+case $IDEAQ1 in
+	"Y")
+		echo -e "\nWould you like to tell me the idea so"
+		read -p "that I can add it to the Date-a-base? (Y/N) "  IDEAQ2
+		clear
+		case $IDEAQ2 in
+			"Y")
+				echo -e "\nEnter it here and I will add" 
+				read -p "it to the Date-a-base: " IDEAQ3
+				echo -e "$NAME \t $IDEAQ3" >> DateABase
+				echo -e "\nSounds like fun!  $IDEAQ3 was added to the Date-a-base. \n"
+				echo -e "It was lovely chatting with you, $NAME.  Have a gay day!\n"
+				;;
+			"N")
+				echo -e "\nOkay, maybe later.\n "
+				echo -e "It was lovely chatting with you, $NAME.  Have a gay day!\n"
+				;;
+			*)	
+				echo hmmm... something else... 2
+				;;	
+		esac
+		;;
+	"N")
+		echo -e ""
+		read -p "Okay.  Would you like to hear one of mine? (Y/N) " IDEAQ4
+		clear
+		case $IDEAQ4 in 
+			"Y")
+				echo -e "${PURPLE}\nLet's go to the zoo!\n"
+				echo -e "It was lovely chatting with you, $NAME.  Have a gay day!\n"
+				;;
+			"N") 
+				echo -e "\nOkay.\n\nIt was lovely chatting with you, $NAME.  Have a gay day!\n"
+				;;
+			*) 
+				echo hmmm... something else... 4
+				;;
+		esac
+		;;	
+	*)
+		echo hmmmmm.... something else again
+		;;
+esac
+
+# Playmood: Asks for my friend's mood and plays appropriate music.
+
+#EOF
